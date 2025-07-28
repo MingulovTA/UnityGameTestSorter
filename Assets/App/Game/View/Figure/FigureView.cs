@@ -24,6 +24,7 @@ namespace App.Game.Figure
         private HoleView _nearestHole;
 
         private SignalBus _signalBus;
+        private ParticleSystem _fxPoof;
 
         [Inject]
         private void Construct(SignalBus signalBus)
@@ -46,11 +47,12 @@ namespace App.Game.Figure
             _dragItemTween?.Kill();
         }
 
-        public void Init(FigurePathView figurePathView, float speed)
+        public void Init(FigurePathView figurePathView, float speed, ParticleSystem fxPoof)
         {
             _figurePathView = figurePathView;
             _speed = speed;
             _dragItem.transform.localPosition = Vector3.zero;
+            _fxPoof = fxPoof;
         }
 
         public void Go()
@@ -58,10 +60,15 @@ namespace App.Game.Figure
             _transform.position = _figurePathView.StartWp.position;
             _movingTween = _transform.DOMove(_figurePathView.EndWp.position, 1f / _speed)
                 .SetEase(Ease.Linear)
-                .OnComplete(OnFigureReached);
+                .OnComplete(OnFigureKilled);
         }
 
-        private void OnFigureReached() => _signalBus.Fire(new FigureReachedSignal(this));
+        private void OnFigureKilled()
+        {
+            _fxPoof.transform.position = _dragItem.transform.position+Vector3.back;
+            _fxPoof.Play();
+            _signalBus.Fire(new FigureKilledSignal(this));
+        }
 
         private void PressHandler()
         {
@@ -71,10 +78,16 @@ namespace App.Game.Figure
 
         private void ReleaseHandler()
         {
-            if (_nearestHole==null||_nearestHole.ShapeTypeId!=_shapeTypeId)
+            if (_nearestHole == null)
             {
                 _movingTween.Play();
                 MoveDragItemToOrigin();
+                return;
+            }
+            
+            if (_nearestHole.ShapeTypeId!=_shapeTypeId)
+            {
+                OnFigureKilled();
             }
             else
             {
@@ -89,7 +102,6 @@ namespace App.Game.Figure
             {
                 _signalBus.Fire(new FigureDroppedToHoleSignal(this));
             });
-
         }
 
         private void MoveDragItemToOrigin()

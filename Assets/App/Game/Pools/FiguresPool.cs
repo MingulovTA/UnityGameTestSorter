@@ -34,13 +34,13 @@ namespace App.Game.Pools
 
         public void Initialize()
         {
-            _signalBus.Subscribe<FigureReachedSignal>(FigureKilledHandler);
+            _signalBus.Subscribe<FigureKilledSignal>(FigureKilledHandler);
             _signalBus.Subscribe<FigureDroppedToHoleSignal>(FigureDroppedToHoleHandler);
         }
 
         public void Dispose()
         {
-            _signalBus.Unsubscribe<FigureReachedSignal>(FigureKilledHandler);
+            _signalBus.Unsubscribe<FigureKilledSignal>(FigureKilledHandler);
             _signalBus.Unsubscribe<FigureDroppedToHoleSignal>(FigureDroppedToHoleHandler);
         }
 
@@ -61,8 +61,8 @@ namespace App.Game.Pools
             return freeFigure;
         }
 
-        private void FigureKilledHandler(FigureReachedSignal figureReachedSignal) =>
-            Push(figureReachedSignal.FigureView);
+        private void FigureKilledHandler(FigureKilledSignal figureKilledSignal) =>
+            Push(figureKilledSignal.FigureView);
 
         private void FigureDroppedToHoleHandler(FigureDroppedToHoleSignal figureDroppedToHoleSignal) =>
             Push(figureDroppedToHoleSignal.FigureView);

@@ -3,6 +3,7 @@ using App.Game.GameField;
 using App.Game.Holes;
 using App.Game.Pools;
 using App.Game.Signals;
+using App.Game.View.GameField;
 using UnityEngine;
 using Zenject;
 
@@ -13,6 +14,7 @@ namespace App.Core.Installers
         [SerializeField] private GameFieldView _gameFieldView;
         [SerializeField] private HolesField _holesField;
         [SerializeField] private Camera _camera;
+        [SerializeField] private ParticleSystem _fxPoof;
 
         public override void InstallBindings()
         {
@@ -50,6 +52,9 @@ namespace App.Core.Installers
             
             Container.Bind<HolesField>()
                 .FromInstance(_holesField);
+
+            Container.Bind<ParticleSystem>()
+                .FromInstance(_fxPoof);
         }
 
         private void RegisterSignalBus()
@@ -57,7 +62,7 @@ namespace App.Core.Installers
             SignalBusInstaller.Install(Container);
             
             Container.DeclareSignal<FigureDroppedToHoleSignal>();
-            Container.DeclareSignal<FigureReachedSignal>();
+            Container.DeclareSignal<FigureKilledSignal>();
             Container.DeclareSignal<GameStartSignal>();
             Container.DeclareSignal<GameCompleteSignal>();
             Container.DeclareSignal<PlayerStatsUpdateSignal>();

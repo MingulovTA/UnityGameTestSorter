@@ -7,6 +7,7 @@ using App.Game.GameField;
 using App.Game.Pools;
 using App.Game.Settings.CustomTypes;
 using App.Game.Signals;
+using App.Game.View.GameField;
 using App.Services.Runners;
 using Arpa_common.General.Extentions;
 using UnityEngine;
@@ -82,7 +83,7 @@ namespace App.Game
             _lastFigurePath = _gameFieldView.FigurePaths.Where(fp => fp != _lastFigurePath).ToList().GetRandomItem();
         
             FigureView figureView = _figuresPool.GetRandomFigureOf(_lastShapeTypeId);
-            figureView.Init(_lastFigurePath,GetRandomFloatFromRange(_gameSettingsService.GameSettings.FiguresSpeed));
+            figureView.Init(_lastFigurePath,GetRandomFloatFromRange(_gameSettingsService.GameSettings.FiguresSpeed),_gameFieldView.FxPoof);
             figureView.transform.SetParent(_gameFieldView.transform);
             figureView.Go();
         }

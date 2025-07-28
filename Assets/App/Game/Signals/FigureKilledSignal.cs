@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace App.Game.Signals
 {
-    public class FigureReachedSignal
+    public class FigureKilledSignal
     {
         public FigureView FigureView;
 
-        public FigureReachedSignal(FigureView figureView)
+        public FigureKilledSignal(FigureView figureView)
         {
             FigureView = figureView;
         }

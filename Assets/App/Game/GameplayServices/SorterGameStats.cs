@@ -27,14 +27,14 @@ namespace App.Game
         public void Initialize()
         {
             _signalBus.Subscribe<FigureDroppedToHoleSignal>(FigureInstallHandler);
-            _signalBus.Subscribe<FigureReachedSignal>(FigureReachedHandler);
+            _signalBus.Subscribe<FigureKilledSignal>(FigureReachedHandler);
             InitGameplaySettings();
         }
 
         public void Dispose()
         {
             _signalBus.Unsubscribe<FigureDroppedToHoleSignal>(FigureInstallHandler);
-            _signalBus.Unsubscribe<FigureReachedSignal>(FigureReachedHandler);
+            _signalBus.Unsubscribe<FigureKilledSignal>(FigureReachedHandler);
         }
 
         private void InitGameplaySettings()
