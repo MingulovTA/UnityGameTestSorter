@@ -83,6 +83,7 @@ namespace App.Game
         
             FigureView figureView = _figuresPool.GetRandomFigureOf(_lastShapeTypeId);
             figureView.Init(_lastFigurePath,GetRandomFloatFromRange(_gameSettingsService.GameSettings.FiguresSpeed));
+            figureView.transform.SetParent(_gameFieldView.transform);
             figureView.Go();
         }
     
