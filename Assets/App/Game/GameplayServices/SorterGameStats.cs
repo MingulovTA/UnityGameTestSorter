@@ -44,7 +44,6 @@ namespace App.Game
         {
             _playerHealth = _gameSettingsService.GameSettings.PlayerHealth;
             _figuresRemainsToWin = GetRandomIntFromRange(_gameSettingsService.GameSettings.FiguresCountToWin); 
-            Debug.Log($"_figuresRemainsToWin = {_figuresRemainsToWin}({_gameSettingsService.GameSettings.FiguresCountToWin.Min},{_gameSettingsService.GameSettings.FiguresCountToWin.Max})");
         }
 
         private void FigureInstallHandler()
