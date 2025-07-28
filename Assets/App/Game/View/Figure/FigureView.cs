@@ -60,15 +60,23 @@ namespace App.Game.Figure
             _transform.position = _figurePathView.StartWp.position;
             _movingTween = _transform.DOMove(_figurePathView.EndWp.position, 1f / _speed)
                 .SetEase(Ease.Linear)
-                .OnComplete(OnFigureKilled);
+                .OnComplete(Kill);
         }
-
-        private void OnFigureKilled()
+        
+        private void Kill()
+        {
+            KillWithoutEvent();
+            _signalBus.Fire(new FigureKilledSignal(this));
+        }
+        
+        public void KillWithoutEvent()
         {
             _fxPoof.transform.position = _dragItem.transform.position+Vector3.back;
             _fxPoof.Play();
-            _signalBus.Fire(new FigureKilledSignal(this));
+            _movingTween?.Kill();
+            _dragItemTween?.Kill();
         }
+
 
         private void PressHandler()
         {
@@ -87,7 +95,7 @@ namespace App.Game.Figure
             
             if (_nearestHole.ShapeTypeId!=_shapeTypeId)
             {
-                OnFigureKilled();
+                Kill();
             }
             else
             {

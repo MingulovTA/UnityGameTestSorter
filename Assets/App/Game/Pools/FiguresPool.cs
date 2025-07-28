@@ -19,6 +19,7 @@ namespace App.Game.Pools
         };
 
         private List<FigureView> _freeFigures = new List<FigureView>();
+        private List<FigureView> _activeFigures = new List<FigureView>();
 
         private IFiguresFactory _figuresFactory;
         private SignalBus _signalBus;
@@ -51,12 +52,26 @@ namespace App.Game.Pools
             if (freeFigureOrNull!=null)
                 return Pop(freeFigureOrNull);
 
-            return _figuresFactory.GetRandomFigureByPath(figurePath);
+            var newFigure = _figuresFactory.GetRandomFigureByPath(figurePath);
+            newFigure.AddTo(_activeFigures);
+            return newFigure;
+        }
+
+        public void KillAllActiveFigures()
+        {
+            foreach (var activeFigure in _activeFigures)
+            {
+                activeFigure.KillWithoutEvent();
+                activeFigure.AddTo(_freeFigures);
+            }
+            
+            _activeFigures.Clear();
         }
 
         private FigureView Pop(FigureView freeFigure)
         {
             _freeFigures.Remove(freeFigure);
+            freeFigure.AddTo(_activeFigures);
             freeFigure.gameObject.SetActive(true);
             return freeFigure;
         }
@@ -70,6 +85,7 @@ namespace App.Game.Pools
         private void Push(FigureView figureView)
         {
             figureView.gameObject.SetActive(false);
+            _activeFigures.Remove(figureView);
             figureView.AddTo(_freeFigures);
         }
     }

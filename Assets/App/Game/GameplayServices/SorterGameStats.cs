@@ -1,5 +1,6 @@
 using System;
 using App.Game.Signals;
+using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 using RangeInt = App.Game.Settings.CustomTypes.RangeInt;
@@ -10,8 +11,10 @@ namespace App.Game
     {
         private int _figuresRemainsToWin;
         private int _playerHealth;
+        private int _playerScore;
 
         public int FiguresRemainsToWin => _figuresRemainsToWin;
+        public int PlayerScore => _playerScore;
         public int PlayerHealth => _playerHealth;
 
         private SignalBus _signalBus;
@@ -41,24 +44,22 @@ namespace App.Game
         {
             _playerHealth = _gameSettingsService.GameSettings.PlayerHealth;
             _figuresRemainsToWin = GetRandomIntFromRange(_gameSettingsService.GameSettings.FiguresCountToWin); 
+            Debug.Log($"_figuresRemainsToWin = {_figuresRemainsToWin}({_gameSettingsService.GameSettings.FiguresCountToWin.Min},{_gameSettingsService.GameSettings.FiguresCountToWin.Max})");
         }
 
         private void FigureInstallHandler()
         {
+            _playerScore++;
             _figuresRemainsToWin--;
-            _signalBus.Fire<PlayerStatsUpdateSignal>();
-            if (_figuresRemainsToWin<=0)
-                _signalBus.Fire(new GameCompleteSignal(true));
+             _signalBus.Fire<PlayerStatsUpdateSignal>();
         }
 
         private void FigureReachedHandler()
         {
             _playerHealth--;
             _signalBus.Fire<PlayerStatsUpdateSignal>();
-            if (_playerHealth<=0)
-                _signalBus.Fire(new GameCompleteSignal(false));
         }
 
-        private int GetRandomIntFromRange(RangeInt rangeInt) => Random.Range(rangeInt.Min, rangeInt.Max);
+        private int GetRandomIntFromRange(RangeInt rangeInt) => Random.Range(rangeInt.Min,rangeInt.Max);
     }
 }

@@ -33,7 +33,7 @@ namespace App.Core.Installers
             
             Container.BindInterfacesTo<FiguresPool>()
                 .AsSingle();
-            
+
             Container.BindInterfacesTo<SorterGameStats>()
                 .AsSingle();
             
@@ -52,9 +52,6 @@ namespace App.Core.Installers
             
             Container.Bind<HolesField>()
                 .FromInstance(_holesField);
-
-            Container.Bind<ParticleSystem>()
-                .FromInstance(_fxPoof);
         }
 
         private void RegisterSignalBus()

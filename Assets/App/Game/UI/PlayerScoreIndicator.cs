@@ -5,7 +5,7 @@ using Zenject;
 
 namespace App.Game.UI
 {
-    public class FiguresCountIndicator : MonoBehaviour
+    public class PlayerScoreIndicator : MonoBehaviour
     {
         [SerializeField] private Text _textLabel;
 
@@ -34,6 +34,6 @@ namespace App.Game.UI
             _signalBus.Unsubscribe<GameStartSignal>(UpdateView);
         }
 
-        private void UpdateView() => _textLabel.text = _sorterGameStats.FiguresRemainsToWin.ToString();
+        private void UpdateView() => _textLabel.text = _sorterGameStats.PlayerScore.ToString();
     }
 }

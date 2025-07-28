@@ -48,14 +48,20 @@ namespace App.Game
         public void Initialize()
         {
             _signalBus.Subscribe<GameStartSignal>(StartSpawning);
-            _signalBus.Subscribe<GameCompleteSignal>(StopSpawning);
+            _signalBus.Subscribe<GameCompleteSignal>(CompleteSignalHandler);
             StartSpawning();
         }
 
         public void Dispose()
         {
             _signalBus.Unsubscribe<GameStartSignal>(StartSpawning);
-            _signalBus.Unsubscribe<GameCompleteSignal>(StopSpawning);
+            _signalBus.Unsubscribe<GameCompleteSignal>(CompleteSignalHandler);
+        }
+
+        private void CompleteSignalHandler()
+        {
+            _figuresPool.KillAllActiveFigures();
+            StopSpawning();
         }
 
         private void StartSpawning()

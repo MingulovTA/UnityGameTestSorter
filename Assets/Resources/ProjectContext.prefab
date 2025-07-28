@@ -126,6 +126,7 @@ MonoBehaviour:
     _displayWarningWhenResolvingDuringInstall: 1
     _validationRootResolveMethod: 0
     _validationErrorResponse: 0
+    _constructorChoiceStrategy: 0
     _signalSettings:
       _defaultSyncMode: 0
       _missingHandlerDefaultResponse: 2
@@ -143,3 +144,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc4fa1ad3a31d8e49a6426991d1f7a47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _popupsContainer: {fileID: 7202309943816209667, guid: b54d0727e2366024180521fd0bc559fb, type: 3}
